@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Semiconductor Yield Prediction | ML Project</title>
+
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:rgba(255,255,255,.06);
+      --text:#e8eefc;
+      --muted:rgba(232,238,252,.72);
+      --border:rgba(255,255,255,.12);
+      --accent:#4f9cff;
+      --accent2:#7c5cff;
+      --shadow:0 18px 60px rgba(0,0,0,.45);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    body{
+      background:
+        radial-gradient(1200px 600px at 20% 0%, rgba(79,156,255,.25), transparent 60%),
+        radial-gradient(900px 500px at 80% 10%, rgba(124,92,255,.18), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.6;
+    }
+
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .container{width:min(1100px,92%);margin:auto;padding:48px 0}
+
+    header{
+      display:grid;
+      grid-template-columns:1.3fr .7fr;
+      gap:18px;
+      align-items:center;
+      padding:28px;
+      border:1px solid var(--border);
+      background:var(--card);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+
+    .badge{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      font-size:14px;
+      color:var(--muted);
+      padding:8px 12px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      width:fit-content;
+      margin-bottom:12px;
+    }
+
+    .title{
+      font-size:clamp(26px,3.2vw,44px);
+      font-weight:800;
+      letter-spacing:-.5px;
+      margin-bottom:8px;
+    }
+
+    .subtitle{
+      color:var(--muted);
+      font-size:15px;
+      max-width:75ch;
+    }
+
+    .cta{
+      display:flex;
+      gap:12px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      font-weight:600;
+      transition:transform .15s ease, background .15s ease;
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+      background:rgba(255,255,255,.09);
+      text-decoration:none;
+    }
+
+    .btn.primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      border:none;
+    }
+
+    .grid{
+      margin-top:22px;
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:18px;
+    }
+
+    .card{
+      grid-column:span 6;
+      padding:22px;
+      border-radius:20px;
+      border:1px solid var(--border);
+      background:var(--card);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+
+    .card.full{grid-column:span 12}
+
+    h2{font-size:18px;margin-bottom:10px}
+    p{color:var(--muted);font-size:14.5px}
+
+    ul{
+      margin-top:10px;
+      padding-left:18px;
+      color:var(--muted);
+      font-size:14.5px;
+    }
+
+    code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+    pre{
+      margin-top:12px;
+      padding:14px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.28);
+      overflow-x:auto;
+      font-size:13px;
+      color:rgba(232,238,252,.9);
+    }
+
+    .pill-row{
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .pill{
+      font-size:13px;
+      color:rgba(232,238,252,.86);
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+    }
+
+    .kpi{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .kpi-box{
+      padding:14px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      border-radius:16px;
+    }
+
+    .kpi-label{color:var(--muted);font-size:12.5px}
+    .kpi-value{font-size:18px;font-weight:800;margin-top:4px}
+
+    footer{
+      margin-top:22px;
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+      padding:16px 0;
+    }
+
+    @media (max-width:900px){
+      header{grid-template-columns:1fr}
+      .cta{justify-content:flex-start}
+      .card{grid-column:span 12}
+      .kpi{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <div class="badge">🧪 Machine Learning • Classification • Manufacturing Analytics</div>
+        <div class="title">Semiconductor Yield Prediction</div>
+        <div class="subtitle">
+          End-to-end ML project to predict semiconductor manufacturing yield (Pass/Fail) using sensor signal data.
+          Focused on preprocessing, feature handling, model training, and evaluation for early defect detection.
+        </div>
+
+        <div class="pill-row">
+          <div class="pill">Python</div>
+          <div class="pill">Pandas</div>
+          <div class="pill">Scikit-learn</div>
+          <div class="pill">EDA</div>
+          <div class="pill">Classification</div>
+        </div>
+      </div>
+
+      <div class="cta">
+        <!-- Replace repo link with your GitHub project URL -->
+        <a class="btn primary" href="YOUR_GITHUB_REPO_LINK_HERE" target="_blank">🔗 View GitHub Repo</a>
+        <a class="btn" href="./README.md" target="_blank">📄 README</a>
+        <a class="btn" href="./semiconductor-yield-prediction.ipynb" target="_blank">📓 Notebook</a>
+        <a class="btn" href="./Semiconductor_Yield_Prediction_Final_Report.docx" target="_blank">📝 Final Report</a>
+      </div>
+    </header>
+
+    <section class="grid">
+      <div class="card">
+        <h2>📌 Objective</h2>
+        <p>
+          Predict whether a semiconductor production sample will <b>Pass</b> or <b>Fail</b> quality checks based on
+          high-dimensional sensor signal readings. This supports early detection of defects and reduces manufacturing loss.
+        </p>
+
+        <div class="kpi">
+          <div class="kpi-box">
+            <div class="kpi-label">Problem Type</div>
+            <div class="kpi-value">Binary Classification</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">Data Source</div>
+            <div class="kpi-value">Signal Sensor CSV</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-label">Output</div>
+            <div class="kpi-value">Yield (0/1)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🧠 Key Tasks</h2>
+        <ul>
+          <li>Data cleaning (missing values, duplicates, invalid records)</li>
+          <li>Feature scaling and preparation for ML</li>
+          <li>Model training and evaluation</li>
+          <li>Confusion matrix + classification metrics</li>
+          <li>Selection of best model for yield prediction</li>
+        </ul>
+      </div>
+
+      <div class="card full">
+        <h2>⚙️ Pipeline Overview</h2>
+        <pre>
+Raw Signal Data (CSV)
+   ↓
+Data Cleaning + Missing Value Handling
+   ↓
+Feature Engineering + Scaling
+   ↓
+Train/Test Split
+   ↓
+Model Training (Baseline + Ensemble)
+   ↓
+Evaluation (Accuracy, Precision, Recall, F1, ROC-AUC)
+   ↓
+Final Model + Report
+        </pre>
+      </div>
+
+      <div class="card">
+        <h2>📂 Dataset</h2>
+        <p>
+          The dataset contains multiple sensor signal features collected during manufacturing.
+          Each row represents one sample and the target indicates yield outcome.
+        </p>
+        <pre>
+Files:
+- signal-data.csv (raw data)
+- semiconductor-yield-prediction.ipynb (model pipeline)
+        </pre>
+      </div>
+
+      <div class="card">
+        <h2>📊 Model Evaluation (Template)</h2>
+        <p>
+          Replace the values below with your actual results from the notebook.
+        </p>
+        <pre>
+Accuracy   : XX.XX%
+Precision  : XX.XX%
+Recall     : XX.XX%
+F1-Score   : XX.XX%
+ROC-AUC    : XX.XX
+        </pre>
+      </div>
+
+      <div class="card full">
+        <h2>🛠️ Tech Stack</h2>
+        <ul>
+          <li><b>Python:</b> data processing + model development</li>
+          <li><b>Pandas / NumPy:</b> cleaning and transformations</li>
+          <li><b>Scikit-learn:</b> ML models + evaluation metrics</li>
+          <li><b>Jupyter Notebook:</b> reproducible workflow</li>
+          <li><b>Documentation:</b> final report (DOCX/PDF)</li>
+        </ul>
+      </div>
+
+      <div class="card full">
+        <h2>🚀 How to Run</h2>
+        <ul>
+          <li>Clone the repository</li>
+          <li>Open <code>semiconductor-yield-prediction.ipynb</code> in Jupyter Notebook</li>
+          <li>Install dependencies: <code>pip install pandas numpy scikit-learn matplotlib</code></li>
+          <li>Run all cells to train and evaluate the model</li>
+        </ul>
+      </div>
+
+      <div class="card full">
+        <h2>📌 Repository Structure</h2>
+        <pre>
+semiconductor-yield-prediction/
+│
+├── README.md
+├── signal-data.csv
+├── semiconductor-yield-prediction.ipynb
+├── Semiconductor_Yield_Prediction_Final_Report.docx
+└── index.html
+        </pre>
+      </div>
+
+      <div class="card full">
+        <h2>📬 Contact</h2>
+        <p>
+          If you want to collaborate or review improvements (feature selection, PCA, SMOTE, model tuning),
+          connect through GitHub.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      Semiconductor Yield Prediction • Machine Learning Project • Portfolio Ready
+    </footer>
+  </div>
+</body>
+</html>
